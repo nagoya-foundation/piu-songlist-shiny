@@ -1,22 +1,21 @@
 library(shiny)
 
-# Read CSV
+# [IMPROVE] Read CSV 
 r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
 
-# Start conversion of levels
-speed <- r$LEVEL
-double <- r$LEVEL
-coop <- r$LEVEL
-sperformace <- r$LEVEL
-dperformace <- r$LEVEL
+# [IMPROVE] Regex 
+speed <- gsub("S", "", gsub("\\b\\s*([^S]\\d+|[A-z]{2,}\\d+)\\b", "", r$LEVEL))
+double <- gsub("D", "", gsub("\\b\\s*([^D]\\d+|[A-z]{2,}\\d+)\\b", "", r$LEVEL))
 
+# Not working properly
+coop <- gsub("CO", "", gsub("\\s*(S\\d+)|\\s*(D\\d+)|\\s*(DP\\d+)|\\s*(SP\\d+)", "", r$LEVEL))
+sperformace <- gsub("SP", "", gsub("\\s*S\\d+\\s*|\\s*D\\d+\\s*|\\s*DP\\d+\\s*|\\s*CO\\d+\\s*", "", r$LEVEL))
+dperformace <- gsub("DP", "", gsub("\\s*S\\d+\\s*|\\s*D\\d+\\s*|\\s*CO\\d+\\s*|\\s*SP\\d+\\s*", "", r$LEVEL))
 
-speed <- gsub("S", "", gsub("\\b\\s*([^S]\\d+|[A-z]{2,}\\d+)\\b", "", speed))
-double <- gsub("D", "", gsub("\\b\\s*([^D]\\d+|[A-z]{2,}\\d+)\\b", "", double))
-#coop <- gsub("CO", "", gsub("\\b\\s*([^CO]\\d+|[A-z]{2,}\\d+)\\b", "", coop))
-#sperformace <- gsub("SP", "", gsub("\\b\\s*([^SP]\\d+|[A-z]{2,}\\d+)\\b", "", sperformace))
-#dperformace <- gsub("DP", "", gsub("\\b\\s*([^DP]\\d+|[A-z]{2,}\\d+)\\b", "", dperformace))
+# BPM is numeric to organize properly inside ui
+r$BPM <- as.numeric(r$BPM)
 
+# Speed is now default case
 r$LEVEL <- speed
 
 # User Interface
