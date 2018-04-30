@@ -1,8 +1,9 @@
 library(shiny)
+library(DT)
 
 # [IMPROVE] Read CSV 
-r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
-
+#r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
+r <- x
 # [IMPROVE] Regex 
 speed <- gsub("S", "", gsub("\\b\\s*([^S]\\d+|[A-z]{2,}\\d+)\\b", "", r$LEVEL))
 double <- gsub("D", "", gsub("\\b\\s*([^D]\\d+|[A-z]{2,}\\d+)\\b", "", r$LEVEL))
@@ -20,7 +21,11 @@ r$LEVEL <- speed
 
 # User Interface
 ui <- fluidPage(
-    
+	#style = "background-color: #c0fafc; height:100%",
+	
+	# Styling
+	tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "app.css")),
+	
     titlePanel("Pump It Up Songlist"),
     
     fluidRow(
@@ -37,42 +42,53 @@ ui <- fluidPage(
     
     fluidRow(
         column(12,
-            DT::dataTableOutput("table")
+			   DT::dataTableOutput("table")
         )
     )
 )
 
 # Server
 server <- function(input, output) {
-    output$table <- DT::renderDataTable(DT::datatable({
-        if (input$game != "All") {
-            r <- r[r$GAME == input$game,]
-        }
-        if (input$category != "Speed") {
-            if(input$category == "Double"){
-            	
-            }
-        	
-        	switch (input$category,
-        		"Double" = {
-        			r$LEVEL <- double
-        		},
-        		"Co-op" = {
-        			r$LEVEL <- coop
-        		},
-        		"Single Performace" = {
-        			r$LEVEL <- dperformace
-        		},
-        		{
-        			r$LEVEL <- sperformace
-        		}
-			)
-        }
-        if (input$level != "All") {
-        	r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep(paste0("\\b^", input$level, "\\b"), x))) > 0, ]
-        }
-		r
-    }))
+    output$table <- renderDataTable(
+    		datatable({
+	    	if (input$game != "All") {
+	            r <- r[r$GAME == input$game,]
+	        }
+	        if (input$category != "Speed") {
+	            if(input$category == "Double"){
+	            	
+	            }
+	        	
+	        	switch (input$category,
+	        		"Double" = {
+	        			r$LEVEL <- double
+	        		},
+	        		"Co-op" = {
+	        			r$LEVEL <- coop
+	        		},
+	        		"Single Performace" = {
+	        			r$LEVEL <- dperformace
+	        		},
+	        		{
+	        			r$LEVEL <- sperformace
+	        		}
+				)
+	        }
+	        if (input$level != "All") {
+	        	r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep(paste0("\\b^", input$level, "\\b"), x))) > 0, ]
+	        }
+			r
+	    },
+			options = list(
+				pageLength = 20,
+				lengthChange = FALSE
+				#dom = 'tip'
+			),
+			#class = 'cell-border stripe',
+			rownames = FALSE
+		) 
+		#%>% formatStyle(columns = "GAME", target = "row", textAlign = "center")
+	)
 }
 
 # Create Shiny app object
