@@ -1,8 +1,8 @@
 library(shiny)
 library(DT)
 
-# [IMPROVE] Read CSV 
-r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
+# Read CSV 
+r <- read.csv(paste0(getwd(), "/data/pumpList.csv"), stringsAsFactors = F)
 
 # [IMPROVE] Regex 
 speed <- gsub("S", "", gsub("\\b\\s*([^S]|[A-z]{2,})\\d+\\b", "", r$LEVEL))
