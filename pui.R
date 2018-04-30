@@ -4,11 +4,11 @@ library(shiny)
 r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
 
 # [IMPROVE] Regex 
-speed <- gsub("S", "", gsub("\\b\\s*([^S]\\d+|[A-z]{2,}\\d+)\\b", "", r$LEVEL))
-double <- gsub("D", "", gsub("\\b\\s*([^D]\\d+|[A-z]{2,}\\d+)\\b", "", r$LEVEL))
+speed <- gsub("S", "", gsub("\\b\\s*([^S]|[A-z]{2,})\\d+\\b", "", r$LEVEL))
+double <- gsub("D", "", gsub("\\b\\s*([^D]|[A-z]{2,})\\d+\\b", "", r$LEVEL))
 
 # Not working properly
-coop <- gsub("CO", "", gsub("\\s*(S\\d+)|\\s*(D\\d+)|\\s*(DP\\d+)|\\s*(SP\\d+)", "", r$LEVEL))
+coop <- gsub("CO", "", gsub("\\s*[SD][P]*\\d+\\s*", "", r$LEVEL))
 sperformace <- gsub("SP", "", gsub("\\s*S\\d+\\s*|\\s*D\\d+\\s*|\\s*DP\\d+\\s*|\\s*CO\\d+\\s*", "", r$LEVEL))
 dperformace <- gsub("DP", "", gsub("\\s*S\\d+\\s*|\\s*D\\d+\\s*|\\s*CO\\d+\\s*|\\s*SP\\d+\\s*", "", r$LEVEL))
 
