@@ -2,16 +2,15 @@ library(shiny)
 library(DT)
 
 # [IMPROVE] Read CSV 
-#r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
-r <- x
+r <- read.csv("Desktop/piu-songlist-shiny/pumpList.csv", stringsAsFactors = F)
+
 # [IMPROVE] Regex 
 speed <- gsub("S", "", gsub("\\b\\s*([^S]|[A-z]{2,})\\d+\\b", "", r$LEVEL))
 double <- gsub("D", "", gsub("\\b\\s*([^D]|[A-z]{2,})\\d+\\b", "", r$LEVEL))
-
-# Not working properly
 coop <- gsub("CO", "", gsub("\\s*[SD][P]*\\d+\\s*", "", r$LEVEL))
 sperformace <- gsub("SP", "", gsub("\\s*S\\d+\\s*|\\s*D\\d+\\s*|\\s*DP\\d+\\s*|\\s*CO\\d+\\s*", "", r$LEVEL))
 dperformace <- gsub("DP", "", gsub("\\s*S\\d+\\s*|\\s*D\\d+\\s*|\\s*CO\\d+\\s*|\\s*SP\\d+\\s*", "", r$LEVEL))
+
 
 # BPM is numeric to organize properly inside ui
 r$BPM <- as.numeric(r$BPM)
@@ -62,15 +61,19 @@ server <- function(input, output) {
 	        	switch (input$category,
 	        		"Double" = {
 	        			r$LEVEL <- double
+	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
 	        		},
 	        		"Co-op" = {
 	        			r$LEVEL <- coop
+	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
 	        		},
 	        		"Single Performace" = {
 	        			r$LEVEL <- dperformace
+	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
 	        		},
 	        		{
 	        			r$LEVEL <- sperformace
+	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
 	        		}
 				)
 	        }
@@ -93,3 +96,4 @@ server <- function(input, output) {
 
 # Create Shiny app object
 shinyApp(ui, server)
+
