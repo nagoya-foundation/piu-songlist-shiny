@@ -2,6 +2,8 @@
 
 Interactive pump it up web songlist made in R.
 
+![piu-example](/relative/path/to/img.png?raw=true)
+
 ## Getting Started
 
 Install the latest stable [Shiny package](https://github.com/rstudio/shiny) and [DT package](https://github.com/rstudio/DT) version from CRAN running the following command from an R console:
