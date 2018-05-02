@@ -59,22 +59,22 @@ server <- function(input, output) {
 	        		"Double" = {
 	        			r$LEVEL <- double
 	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
-	        			names(r)[5] <- "PLAYERS"
+	        			#names(r)[5] <- "PLAYERS"
 	        		},
 	        		"Co-op" = {
 	        			r$LEVEL <- coop
 	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
-	        			names(r)[5] <- "PLAYERS"
+	        			#names(r)[5] <- "PLAYERS"
 	        		},
 	        		"Single Performace" = {
 	        			r$LEVEL <- dperformace
 	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
-	        			names(r)[5] <- "PLAYERS"
+	        			#names(r)[5] <- "PLAYERS"
 	        		},
 	        		{
 	        			r$LEVEL <- sperformace
 	        			r <- r[lapply(strsplit(r$LEVEL, " "),function(x) length(grep("\\d+", x))) > 0, ]
-	        			names(r)[5] <- "PLAYERS"
+	        			#names(r)[5] <- "PLAYERS"
 	        		}
 				)
 	        }
@@ -95,4 +95,3 @@ server <- function(input, output) {
 
 # Create Shiny app object
 shinyApp(ui, server)
-
